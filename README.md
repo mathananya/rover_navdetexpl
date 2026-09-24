@@ -5,13 +5,15 @@
 depth_module.profile:=640x480x30 \
 rgb_camera.profile:=640x480x30 \
 align_depth.enable:=true \
-pointcloud.enable:=false```
+pointcloud.enable:=false
+```
 
 
 ### WINDOW 2: CAMERA TO ROBOT TRANSFORM
 
 ```ros2 run tf2_ros static_transform_publisher \
---x 0 --y 0 --z 0.2 --frame-id base_link --child-frame-id camera_link```
+--x 0 --y 0 --z 0.2 --frame-id base_link --child-frame-id camera_link
+```
 
 
 ### WINDOW 3: RTAB-MAP (VISUAL ODOMETRY AND MAPPING)
@@ -29,13 +31,15 @@ use_sim_time:=false \
 rtabmap_viz:=false \
 rviz:=false \
 database_path:=$HOME/rtabmap.db \
-args:="--delete_db_on_start --Grid/RangeMax 4.0 --Grid/CellSize 0.05 --Grid/MaxObstacleHeight 1.5"```
+args:="--delete_db_on_start --Grid/RangeMax 4.0 --Grid/CellSize 0.05 --Grid/MaxObstacleHeight 1.5"
+```
 
 
 ### VERIFICATION
 
 ```ros2 topic hz /rtabmap/odom
-ros2 topic info /rtabmap/map --verbose```
+ros2 topic info /rtabmap/map --verbose
+```
 
 
 ### EXPORT MAP
