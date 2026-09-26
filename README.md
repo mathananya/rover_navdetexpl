@@ -1,3 +1,14 @@
+447274,0.971350,2.851915)
+[rgbd_odometry-1] [ WARN] (2026-09-26 16:19:57.673) OdometryF2M.cpp:319::computeTransform() Failed to find a transformation with the provided guess (xyz=1.130603,0.557495,-0.453866 rpy=2.447274,0.971350,2.851915), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-09-26 16:19:57.769) OdometryF2M.cpp:616::computeTransform() Trial with no guess still fail.
+[rgbd_odometry-1] [ WARN] (2026-09-26 16:19:57.769) OdometryF2M.cpp:626::computeTransform() Registration failed: "Not enough inliers 0/20 (matches=44) between -1 and 76" (guess=xyz=1.130603,0.557495,-0.453866 rpy=2.447274,0.971350,2.851915)
+[rgbd_odometry-1] [INFO] [1790419797.770874157] [rtabmap.rgbd_odometry]: Odom: quality=0, std dev=0.000000m|0.000000rad, update time=0.149885s delay=0.216484s
+^C[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[rtabmap-2] [INFO] [1790419797.788268019] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rgbd_odometry-1] [INFO] [1790419797.790255323] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+
+
+
 
 ### WINDOW 1: CAMERA
 
