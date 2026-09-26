@@ -1,3 +1,5 @@
+visual preset accuracy vs high/medium
+
 447274,0.971350,2.851915)
 [rgbd_odometry-1] [ WARN] (2026-09-26 16:19:57.673) OdometryF2M.cpp:319::computeTransform() Failed to find a transformation with the provided guess (xyz=1.130603,0.557495,-0.453866 rpy=2.447274,0.971350,2.851915), trying again without a guess.
 [rgbd_odometry-1] [ WARN] (2026-09-26 16:19:57.769) OdometryF2M.cpp:616::computeTransform() Trial with no guess still fail.
