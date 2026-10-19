@@ -1,5 +1,10 @@
 visual preset accuracy vs high/medium
 
+### WINDOW 0: Do this 
+```
+mkdir -p ~/maps_$(date +%F)
+```
+
 ### WINDOW 1: CAMERA
 
 ```
