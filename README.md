@@ -18,10 +18,10 @@ pointcloud.enable:=false
 
 
 ### WINDOW 2: CAMERA TO ROBOT TRANSFORM
-
+#### Height of camera is 46cm rn (change if necessary)
 ```
 ros2 run tf2_ros static_transform_publisher \
---x 0 --y 0 --z 0.2 --frame-id base_link --child-frame-id camera_link
+--x 0 --y 0 --z 0.46 --frame-id base_link --child-frame-id camera_link
 ```
 
 
