@@ -53,7 +53,7 @@ ros2 topic info /rtabmap/map --verbose
 ```
 ros2 run nav2_map_server map_saver_cli -f ~/my_map --ros-args -r map:=/rtabmap/map
 ```
-¡New Version! Should ideally now be able to save multiple map checkpoints.
+¡New Version! Should ideally now be able to save multiple map checkpoints. Given a super long timeout so hopefully the saver should work now
 ```
 ros2 service call /rtabmap/publish_map rtabmap_msgs/srv/PublishMap "{graph_only: false, optimized: true, global_map: true}"
 sleep 1.5
