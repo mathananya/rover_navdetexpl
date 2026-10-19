@@ -9,8 +9,8 @@ rgb_camera.profile:=640x480x30 \
 align_depth.enable:=true \
 pointcloud.enable:=false
 ```
+#### Set pointcloud.enable:=true when creating laserscan
 
-# Set pointcloud.enable:=true when creating laserscan
 
 ### WINDOW 2: CAMERA TO ROBOT TRANSFORM
 
@@ -53,10 +53,16 @@ ros2 topic info /rtabmap/map --verbose
 ```
 ros2 run nav2_map_server map_saver_cli -f ~/my_map --ros-args -r map:=/rtabmap/map
 ```
-
+¡New Version! Should ideally now be able to save multiple map checkpoints.
+```
+ros2 service call /rtabmap/publish_map rtabmap_msgs/srv/PublishMap "{graph_only: false, optimized: true, global_map: true}"
+sleep 1.5
+ros2 run nav2_map_server map_saver_cli -f ~/maps/map_$(date +%Y%m%d_%H%M%S) --ros-args -r map:=/rtabmap/map -p save_map_timeout:=10.0
+```
 
 ### LAUNCH RTAB-MAP IN LOCALISATION MODE (AGAINST SAVED DB FROM ABOVE)
 
+```
 ros2 launch rtabmap_launch rtabmap.launch.py \
   frame_id:=base_link \
   rgb_topic:=/camera/camera/color/image_raw \
@@ -68,9 +74,11 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
   rtabmap_viz:=false \
   rviz:=false \
   args:="-localization"
+```
 
 ### CONVERT TO LASERSCAN
 
+```
 ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node --ros-args \
   -r cloud_in:=/camera/camera/depth/color/points \
   -r scan:=/scan \
@@ -78,9 +86,11 @@ ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node --ros-args \
   -p min_height:=0.05 -p max_height:=0.5 \
   -p range_min:=0.3 -p range_max:=4.0 \
   -p use_inf:=true
+```
 
 
-# nav2_params.yaml (no amcl params)
+#### nav2_params.yaml (no amcl params)
+```
 global_costmap:
   global_costmap:
     ros__parameters:
@@ -93,12 +103,14 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         inflation_radius: 0.4
+```
 
 
-# using navigation_launch.py instead of bringup_launch.py because amcl not needed
+#### using navigation_launch.py instead of bringup_launch.py because amcl not needed
+```
 ros2 launch nav2_bringup navigation_launch.py \
   params_file:=$HOME/nav2_params.yaml \
   use_sim_time:=false \
   map_subscribe_transient_local:=true
-
+```
 
