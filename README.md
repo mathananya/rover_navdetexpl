@@ -154,3 +154,10 @@ ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args \
 
 56s, depth=1792775672.226451s). You may want to set approx_sync_max_interval lower than 0.02s to reject spurious bad synchronizations or use approx_sync=false if streams have all the exact same timestamp.
 [rgbd_odometry-1] [INFO] [1792775672.459324235] [rtabmap.rgbd_odometry]: Odom: quality=103, std dev=0.002694m|0.019285rad, update time=0.136543s delay=0.266466s
+
+
+RVIZ running pointcloud errotrs -- launch rtab in localisation mode
+
+rgbd_odometry-1] [INFO] [1792777138.972442626] [rtabmap.rgbd_odometry]: Odom: quality=0, std dev=0.000000m|0.000000rad, update time=0.247717s delay=0.357750s
+[rtabmap-2] [ERROR] (2026-10-23 23:08:58.980) Rtabmap.cpp:1416::process() RGB-D SLAM mode is enabled, memory is incremental but no odometry is provided. Image 0 is ignored!
+
