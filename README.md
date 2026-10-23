@@ -140,3 +140,8 @@ ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args \
 [rgbd_odometry-1] [ WARN] (2026-10-22 22:42:59.568) OdometryF2M.cpp:325::computeTransform() Failed to find a transformation with the provided guess (xyz=0.068615,0.005642,-0.014183 rpy=0.000058,-0.118331,-0.003690), trying again without a guess.
 [rgbd_odometry-1] [ WARN] (2026-10-22 22:42:59.726) OdometryF2M.cpp:652::computeTransform() Trial with no guess succeeded!
 
+
+[rgbd_odometry-1] [WARN] [1792774764.229470316] []: TF_OLD_DATA ignoring data from the past for frame odom at time 317.494000 according to authority Authority undetectable
+[rgbd_odometry-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rtabmap-2] [WARN] [1792774764.256547129] []: TF_OLD_DATA ignoring data from the past for frame odom at time 317.494000 according to authority Authority undetectable
+
