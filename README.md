@@ -161,3 +161,17 @@ RVIZ running pointcloud errotrs -- launch rtab in localisation mode
 rgbd_odometry-1] [INFO] [1792777138.972442626] [rtabmap.rgbd_odometry]: Odom: quality=0, std dev=0.000000m|0.000000rad, update time=0.247717s delay=0.357750s
 [rtabmap-2] [ERROR] (2026-10-23 23:08:58.980) Rtabmap.cpp:1416::process() RGB-D SLAM mode is enabled, memory is incremental but no odometry is provided. Image 0 is ignored!
 
+
+
+launching params file error
+```
+LocalPlanner
+[controller_server-1] [INFO] [1792777312.369788627] [controller_server]: Setting transform_tolerance to 0.100000
+[controller_server-1] [ERROR] [1792777312.417339595] [controller_server]: Couldn't load critics! Caught exception: No critics defined for FollowPath
+[controller_server-1] [ERROR] [1792777312.434657210] [controller_server]: Caught exception in callback for transition 10
+[controller_server-1] [ERROR] [1792777312.434836294] [controller_server]: Original error: Couldn't load critics! Caught exception: No critics defined for FollowPath
+[controller_server-1] [WARN] [1792777312.434906679] [controller_server]: Callback returned ERROR during the transition: configure
+[controller_server-1] [FATAL] [1792777312.434937087] [controller_server]: Lifecycle node controller_server does not have error state implemented
+[lifecycle_manager-11] [ERROR] [1792777312.440716038] [lifecycle_manager_navigation]: Failed to change state for node: controller_server
+[lifecycle_manager-11] [ERROR] [1792777312.440925849] [lifecycle_manager_navigation]: Failed to bring up all requested nodes. Aborting bringup.
+```
