@@ -118,6 +118,11 @@ ros2 launch nav2_bringup navigation_launch.py \
   use_sim_time:=false \
   map_subscribe_transient_local:=true
 ```
+```
+ros2 run nav2_map_server map_server --ros-args -p yaml_filename:=$HOME/my_map.yaml
+ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args \
+  -p autostart:=true -p node_names:=['map_server']
+```
 
 # ERRORS
 [rgbd_odometry-1] [INFO] [1792689192.109173262] [rtabmap.rgbd_odometry]: Odom: quality=322, std dev=0.002532m|0.019285rad, update time=0.103492s delay=0.174006s
