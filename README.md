@@ -145,3 +145,12 @@ ros2 run nav2_lifecycle_manager lifecycle_manager --ros-args \
 [rgbd_odometry-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
 [rtabmap-2] [WARN] [1792774764.256547129] []: TF_OLD_DATA ignoring data from the past for frame odom at time 317.494000 according to authority Authority undetectable
 
+
+
+
+
+
+[realsense2_camera_node-1] [WARN] [1792775676.522154727] [camera.camera]: No stream match for pointcloud chosen texture Process - Color
+
+56s, depth=1792775672.226451s). You may want to set approx_sync_max_interval lower than 0.02s to reject spurious bad synchronizations or use approx_sync=false if streams have all the exact same timestamp.
+[rgbd_odometry-1] [INFO] [1792775672.459324235] [rtabmap.rgbd_odometry]: Odom: quality=103, std dev=0.002694m|0.019285rad, update time=0.136543s delay=0.266466s
