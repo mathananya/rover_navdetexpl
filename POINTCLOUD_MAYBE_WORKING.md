@@ -3,8 +3,8 @@
 
 ```
 ros2 launch realsense2_camera rs_launch.py \
-depth_module.profile:=640x480x30 \
-rgb_camera.profile:=640x480x30 \
+depth_module.depth_profile:=640x480x30 \
+rgb_camera.color_profile:=640x480x30 \
 align_depth.enable:=true \
 pointcloud.enable:=true
 ```
@@ -47,6 +47,6 @@ ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node --ros-args \
 
 ```
 cd sim_ws
-source /install/
+source install/setup.bash
 ros2 launch rover_for_software_unfucked_description sim.launch.py world:=textured slam:=true nav2:=true   rtabmap_extra_args:="--Grid/NormalsSegmentation false --Grid/MaxGroundHeight 0.05 --Grid/NoiseFilteringRadius 0.1 --Grid/NoiseFilteringMinNeighbors 4" odom_mode:=visual
 ```
