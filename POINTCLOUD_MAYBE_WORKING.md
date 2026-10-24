@@ -46,5 +46,7 @@ ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node --ros-args \
 ### TERM 8
 
 ```
+cd sim_ws
+source /install/
 ros2 launch rover_for_software_unfucked_description sim.launch.py world:=textured slam:=true nav2:=true   rtabmap_extra_args:="--Grid/NormalsSegmentation false --Grid/MaxGroundHeight 0.05 --Grid/NoiseFilteringRadius 0.1 --Grid/NoiseFilteringMinNeighbors 4" odom_mode:=visual
 ```
