@@ -9,8 +9,8 @@ mkdir -p ~/maps_$(date +%F)
 
 ```
 ros2 launch realsense2_camera rs_launch.py \
-depth_module.profile:=640x480x30 \
-rgb_camera.profile:=640x480x30 \
+depth_module.depth_profile:=640x480x30 \
+rgb_camera.color_profile:=640x480x30 \
 align_depth.enable:=true \
 pointcloud.enable:=false
 ```
@@ -38,8 +38,8 @@ qos:=1 \
 queue_size:=30 \
 wait_imu_to_init:=false \
 use_sim_time:=false \
-rtabmap_viz:=false \
-rviz:=false \
+rtabmap_viz:=true \
+rviz:=true \
 database_path:=$HOME/rtabmap.db \
 args:="--delete_db_on_start --Grid/RangeMax 4.0 --Grid/CellSize 0.05 --Grid/MaxObstacleHeight 1.5"
 ```
