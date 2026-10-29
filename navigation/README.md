@@ -4,7 +4,6 @@
 chmod +x ~/rtabmap_tmux.sh
 ~/rtabmap_tmux.sh
 ```
-<br>
 
 ### WINDOW 1: CAMERA
 
