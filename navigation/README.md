@@ -4,7 +4,7 @@
 chmod +x ~/rtabmap_tmux.sh
 ~/rtabmap_tmux.sh
 ```
-
+<br>
 
 ### WINDOW 1: CAMERA
 
@@ -18,7 +18,6 @@ pointcloud.enable:=true
 - Set pointcloud.enable:=true when running the first time, or if camera is giving errors
 - Set pointcloud.enable:=false after successfully running once
 - If giving 5 second error, probably because of USB 2.1 error, use a different cable (ideally USB 3.0)
-<br>
 
 ### WINDOW 2: CAMERA TO ROBOT TRANSFORM
 Height of camera is 46cm rn (change if necessary)
