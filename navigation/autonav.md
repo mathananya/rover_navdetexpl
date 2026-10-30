@@ -1,8 +1,8 @@
 ## How to Run Mapping (rtabmap_tmux.sh)
 
 ```
-chmod +x ~/rtabmap_tmux.sh
-~/rtabmap_tmux.sh
+chmod +x ~/rtabmap_nav_tmux.sh
+~/rtabmap_nav_tmux.sh
 ```
 
 ### WINDOW 1: CAMERA
