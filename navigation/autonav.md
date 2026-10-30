@@ -41,7 +41,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 Change the database file name, every time you do a mapping. Otherwise, it will overwrite the files.
 
 
-### VERIFICATION
+### WINDOW 4+5: VERIFICATION
 
 ```
 ros2 topic list | grep odom      # note the odom topic name, likely /rtabmap/odom
@@ -50,14 +50,14 @@ ros2 topic list | grep odom      # note the odom topic name, likely /rtabmap/odo
 ros2 run tf2_tools view_frames   # confirm map -> odom -> base_link -> camera_link
 ```
 
-### Nav2
+### WINDOW 6: Nav2
 
 ```
 ros2 launch nav2_bringup navigation_launch.py \
   params_file:=$HOME/nav2_params_v1.yaml use_sim_time:=false
 ```
 
-### RViz
+### OFF-BOARD: RViz
 
 Visualise on your PC, not on the Jetson!
 ```
