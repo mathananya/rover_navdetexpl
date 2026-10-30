@@ -54,7 +54,7 @@ ros2 run tf2_tools view_frames   # confirm map -> odom -> base_link -> camera_li
 
 ```
 ros2 launch nav2_bringup navigation_launch.py \
-  params_file:=$HOME/nav2_params.yaml use_sim_time:=false
+  params_file:=$HOME/nav2_params_v1.yaml use_sim_time:=false
 ```
 
 ### RViz
