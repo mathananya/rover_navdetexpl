@@ -10,9 +10,11 @@ chmod +x ~/rtabmap_nav_tmux.sh
 ```
 ros2 launch realsense2_camera rs_launch.py \
   depth_module.depth_profile:=640x480x30 \
-  rgb_camera.color_profile:=640x480x30 \
+  rgb_camera.color_profile:=424x240x30 \
   align_depth.enable:=true \
-  pointcloud.enable:=true
+  pointcloud.enable:=true \
+  decimation_filter.enable:=true \
+  initial_reset:=true
 ```
 
 ### WINDOW 2: CAMERA TO ROBOT TRANSFORM
