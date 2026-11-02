@@ -1,4 +1,4 @@
-## How to Run Mapping (rtabmap_tmux.sh)
+## How to Run Autonav (rtabmap_nav_tmux.sh)
 
 ```
 chmod +x ~/rtabmap_nav_tmux.sh
@@ -21,7 +21,7 @@ ros2 launch realsense2_camera rs_launch.py \
 Height of camera is 46cm rn (change if necessary)
 ```
 ros2 run tf2_ros static_transform_publisher \
-  --x 0 --y 0 --z 0.46 --frame-id base_link --child-frame-id camera_link
+  --x 0.28 --y -0.16 --z 0.42 --roll 0 --pitch 0.0698 --yaw 0 --frame-id base_link --child-frame-id camera_link
 ```
 
 
@@ -56,7 +56,7 @@ ros2 run tf2_tools view_frames   # confirm map -> odom -> base_link -> camera_li
 
 ```
 ros2 launch nav2_bringup navigation_launch.py \
-  params_file:=$HOME/nav2_params_v1.yaml use_sim_time:=false
+  params_file:=$HOME/nav2_params_smac_hybrid_v3.yaml use_sim_time:=false
 ```
 
 ### OFF-BOARD: RViz
