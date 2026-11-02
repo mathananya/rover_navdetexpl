@@ -35,9 +35,9 @@ P6=$(tmux split-window -h -t "$P5" -P -F '#{pane_id}')
 # Type commands (-l = literal). No "Enter" is sent, so nothing runs.
 # Single quotes keep $HOME unexpanded here; it expands when you run it in the pane.
 
-tmux send-keys -t "$P1" -l 'ros2 launch realsense2_camera rs_launch.py depth_module.depth_profile:=640x480x30 rgb_camera.color_profile:=640x480x30 align_depth.enable:=true pointcloud.enable:=true'
+tmux send-keys -t "$P1" -l 'ros2 launch realsense2_camera rs_launch.py depth_module.depth_profile:=640x480x30 rgb_camera.color_profile:=640x480x30 align_depth.enable:=true pointcloud.enable:=true decimation_filter.enable:=true initial_reset:=true'
 
-tmux send-keys -t "$P2" -l 'ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0.46 --frame-id base_link --child-frame-id camera_link'
+tmux send-keys -t "$P2" -l 'ros2 run tf2_ros static_transform_publisher --x 0.28 --y -0.16 --z 0.42 --roll 0 --pitch 0.0698 --yaw 0 --frame-id base_link --child-frame-id camera_link'
 
 tmux send-keys -t "$P3" -l 'ros2 launch rtabmap_launch rtabmap.launch.py frame_id:=base_link rgb_topic:=/camera/camera/color/image_raw depth_topic:=/camera/camera/aligned_depth_to_color/image_raw camera_info_topic:=/camera/camera/color/camera_info approx_sync:=true qos:=1 queue_size:=30 wait_imu_to_init:=false use_sim_time:=false rtabmap_viz:=false rviz:=false localization:=true database_path:=$HOME/rtabmap_date.db args:="--Grid/RangeMax 4.0 --Grid/CellSize 0.05 --Grid/MaxObstacleHeight 1.5"'
 
@@ -45,7 +45,7 @@ tmux send-keys -t "$P4" -l 'ros2 topic list | grep odom'
 
 tmux send-keys -t "$P5" -l 'ros2 run tf2_tools view_frames'
 
-tmux send-keys -t "$P6" -l 'ros2 launch nav2_bringup navigation_launch.py params_file:=$HOME/nav2_params_v1.yaml use_sim_time:=false'
+tmux send-keys -t "$P6" -l 'ros2 launch nav2_bringup navigation_launch.py params_file:=$HOME/nav2_params_smac_hybrid_v3.yaml use_sim_time:=false'
 
 # Start with the first pane focused, then attach
 tmux select-pane -t "$P1"
