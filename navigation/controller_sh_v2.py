@@ -7,8 +7,8 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float32MultiArray, String
 
-L = 0.7777
-W = 0.475
+L = 0.86
+W = 0.52
 
 CMD_VEL_TIMEOUT_SEC = 0.50
 JOY_CMD_TIMEOUT_SEC = 0.30
@@ -21,6 +21,13 @@ MAX_ANGULAR_ACCEL = 3.5
 MIN_SPIN_WHEEL_SPEED = 0.32
 MAX_PIVOT_ANGLE_DEG = 125.0
 MAX_STEER_STEP_PER_TICK_DEG = 35.0
+
+# Steering-lag handling: drive speed is scaled down while the MEASURED wheel
+# angle (pivot encoders) is far from the target angle, so wheels don't scrub.
+ENC_TIMEOUT_SEC = 0.50              # encoder data older than this is ignored
+STEER_ERR_FULL_SPEED_DEG = 10.0     # error <= this -> full speed
+STEER_ERR_MIN_SPEED_DEG = 40.0      # error >= this -> STEER_MIN_SPEED_SCALE
+STEER_MIN_SPEED_SCALE = 0.35        # keep rolling enough to overcome friction
 
 WHEEL_POSITIONS = {
     "LF": ( L / 2.0,  W / 2.0),
@@ -37,6 +44,22 @@ def step_angle_linear(current_deg, target_deg, max_step=MAX_STEER_STEP_PER_TICK_
     if abs(diff) <= max_step:
         return target_clamped
     return current_deg + math.copysign(max_step, diff)
+
+
+def angle_diff_deg(a, b):
+    """Smallest signed difference a - b in degrees, wrapped to [-180, 180)."""
+    return (a - b + 180.0) % 360.0 - 180.0
+
+
+def steering_speed_scale(max_err_deg):
+    """Continuous drive-speed scale vs. worst-case steering error (deg)."""
+    if max_err_deg <= STEER_ERR_FULL_SPEED_DEG:
+        return 1.0
+    if max_err_deg >= STEER_ERR_MIN_SPEED_DEG:
+        return STEER_MIN_SPEED_SCALE
+    frac = (max_err_deg - STEER_ERR_FULL_SPEED_DEG) / (
+        STEER_ERR_MIN_SPEED_DEG - STEER_ERR_FULL_SPEED_DEG)
+    return 1.0 - frac * (1.0 - STEER_MIN_SPEED_SCALE)
 
 
 def compute_icr_from_cmd_vel(vx, wz, last_angles, last_turn_sign):
@@ -60,11 +83,10 @@ def compute_icr_from_cmd_vel(vx, wz, last_angles, last_turn_sign):
         return angles, speeds, last_turn_sign
 
     # 3. Turning or spinning in place
-    # Add a small hysteresis on wz so noise around 0 doesn't flip turn_sign
-    if abs(wz) > 0.03:
-        turn_sign = 1.0 if wz > 0.0 else -1.0
-    else:
-        turn_sign = last_turn_sign
+    # Always follow the sign of wz. Noise near zero is already handled by the
+    # straight-line branch above (|wz| < 0.01), and reusing a stale sign for
+    # 0.01 < |wz| <= 0.03 steered small planner corrections the wrong way.
+    turn_sign = 1.0 if wz > 0.0 else -1.0
 
     # Clamp negative vx dithering near zero so wheels NEVER flip 180 deg mid-turn!
     # Only reverse drive_dir if Nav2 is explicitly executing a BackUp behavior (vx < -0.08 and wz ~ 0)
@@ -123,6 +145,9 @@ def ramp_value(current, target, max_delta):
 class SwerveKinematicsNode(Node):
     def __init__(self):
         super().__init__('swerve_kinematics_node')
+        self.declare_parameter('use_encoder_feedback', True)
+        self.use_encoder_feedback = bool(
+            self.get_parameter('use_encoder_feedback').value)
         self.vx, self.vy, self.wz = 0.0, 0.0, 0.0
         self.current_vx, self.current_vy, self.current_wz = 0.0, 0.0, 0.0
         self.last_cmd_time = self.get_clock().now()
@@ -157,7 +182,7 @@ class SwerveKinematicsNode(Node):
         self.pub_source = self.create_publisher(String, '/drive_source', 10)
         self.timer = self.create_timer(1.0 / PUBLISH_RATE_HZ, self.publish_wheel_commands)
 
-        self.get_logger().info('swerve_kinematics_node started (Proportional ICR + No vx-flip)')
+        self.get_logger().info('swerve_kinematics_node started (Proportional ICR + No vx-flip + encoder steering-lag scaling)')
 
     def enc_callback(self, msg):
         if len(msg.data) >= 4:
@@ -243,16 +268,28 @@ class SwerveKinematicsNode(Node):
                 self.current_vx, self.current_wz, self.last_angles, self.last_turn_sign
             )
 
-            # Check maximum remaining steering error across the 4 wheels
-            max_steer_err = max(
-                abs(raw_angles[idx] - self.last_angles[name])
-                for idx, name in enumerate(WHEEL_ORDER)
+            # Remaining steering error across the 4 wheels. Prefer the MEASURED
+            # pivot angle (encoders) so real steering-motor lag slows the drive;
+            # fall back to the last commanded angle if encoders are missing/stale.
+            enc_fresh = (
+                self.use_encoder_feedback and self.enc_valid and
+                ((now - self.last_enc_time).nanoseconds / 1e9) <= ENC_TIMEOUT_SEC
             )
+            if enc_fresh:
+                max_steer_err = max(
+                    abs(angle_diff_deg(raw_angles[idx], self.enc_angles[idx]))
+                    for idx in range(4)
+                )
+            else:
+                max_steer_err = max(
+                    abs(raw_angles[idx] - self.last_angles[name])
+                    for idx, name in enumerate(WHEEL_ORDER)
+                )
 
-            # If the wheels are swinging through a large angle (> 40 deg, e.g. switching
-            # from Left turn to Right turn), gently cap drive speed to 0.25 so it rolls
-            # enough to overcome friction without shooting off in the wrong direction!
-            transition_scale = 0.35 if max_steer_err > 40.0 else 1.0
+            # Smoothly reduce drive speed while wheels are still swinging
+            # (e.g. left turn -> right turn), never below STEER_MIN_SPEED_SCALE
+            # so the tires keep rolling enough to overcome friction.
+            transition_scale = steering_speed_scale(max_steer_err)
 
             for idx, name in enumerate(WHEEL_ORDER):
                 stepped_ang = step_angle_linear(self.last_angles[name], raw_angles[idx])
