@@ -6,7 +6,6 @@ enable_infra1:=false \
 enable_infra2:=false \
 align_depth.enable:=false \
 pointcloud.enable:=false \
-depth_module.emitter_enabled:=1
 ```
 
 ```
