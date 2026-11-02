@@ -7,8 +7,8 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float32MultiArray, String
 
-L = 0.7777
-W = 0.475
+L = 0.86
+W = 0.52
 
 CMD_VEL_TIMEOUT_SEC = 0.50
 JOY_CMD_TIMEOUT_SEC = 0.30
